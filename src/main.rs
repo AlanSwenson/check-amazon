@@ -1,6 +1,12 @@
+extern crate dotenv;
+
 use reqwest::Error;
 use serde::Deserialize;
+use std::env;
 use std::io;
+
+#[macro_use]
+extern crate dotenv_codegen;
 #[derive(Deserialize, Debug)]
 struct User {
     login: String,
@@ -19,8 +25,8 @@ fn main() -> Result<(), Error> {
 
     let request_url = format!(
         "https://api.github.com/repos/{owner}/{repo}/stargazers",
-        owner = "rust-lang-nursery",
-        repo = "rust-cookbook"
+        owner = dotenv!("OWNER"),
+        repo = dotenv!("REPO")
     );
     let client = reqwest::blocking::Client::builder()
         .user_agent(APP_USER_AGENT)
